@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Navia_Backend.Controllers.Markers;
 using Navia_Backend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -17,6 +17,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     )
 );
+
+// Registrar los mappers de la aplicacion
+builder.Services.AddScoped<MarkersMapper>();
+
+// Registrar AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperNavia));
 
 var app = builder.Build();
 
