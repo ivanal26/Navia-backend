@@ -3,6 +3,21 @@ using Navia_Backend.Controllers.Markers;
 using Navia_Backend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+//Permite usar variables de entorno o en su defecto, appsetting
+var allowedOrigins = builder.Configuration["CORS_ALLOWED_ORIGINS"]?.Split(',')
+    ?? builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
+    ?? Array.Empty<string>();
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -32,6 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowSpecificOrigins"); // Activar CORS
 
 app.UseHttpsRedirection();
 
