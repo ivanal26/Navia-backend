@@ -13,4 +13,14 @@ public class MarkersController : ControllerBase
 
     [HttpGet]
     public IEnumerable<MarkerDto> Get() => _mapper.Get();
+
+    [HttpPost]
+    public IActionResult InsertMarkers([FromBody] IEnumerable<MarkerDto> markersDtos)
+    {
+        if (markersDtos == null || !markersDtos.Any())
+            return BadRequest("No se proporcionaron marcadores.");
+
+        _mapper.InsertMarkers(markersDtos);
+        return Ok("Marcadores insertados correctamente.");
+    }
 }
