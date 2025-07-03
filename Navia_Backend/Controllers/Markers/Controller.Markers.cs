@@ -18,9 +18,11 @@ public class MarkersController : ControllerBase
     public IActionResult InsertMarkers([FromBody] IEnumerable<MarkerDto> markersDtos)
     {
         if (markersDtos == null || !markersDtos.Any())
-            return BadRequest("No se proporcionaron marcadores.");
+        {
+            return BadRequest(new { message = "No se proporcionaron marcadores." });
+        }
 
         _mapper.InsertMarkers(markersDtos);
-        return Ok("Marcadores insertados correctamente.");
+        return Ok(new { message = "Marcadores insertados correctamente." });
     }
 }
